@@ -82,7 +82,7 @@ static void XLALEOBSpinPrecCalcHModes(
     seobParams->a = sqrt(a2); /* OPTV3: From XLALSimIMRSpinEOBWaveformAll; LALSimIMRSpinPrecEOB.c; line(s): 3102*/
 
     // OPTV3: SpinAlignedEOBversion = 2
-    XLALSimIMRCalculateSpinEOBHCoeffs( seobParams->seobCoeffs, seobParams->eobParams->eta, seobParams->a, 2); /* OPTV3: From XLALSimIMRSpinEOBWaveformAll; LALSimIMRSpinPrecEOB.c; line(s): 3127*/
+    XLALSimIMRCalculateSpinEOBHCoeffs( seobParams->seobCoeffs, seobParams->eobParams->eta, seobParams->a, 2,seobParams->KappaCal,seobParams->dSOCal,seobParams->dSSCal); /* OPTV3: From XLALSimIMRSpinEOBWaveformAll; LALSimIMRSpinPrecEOB.c; line(s): 3127*/
 
     /** OPTV3: (3): dValues**/
     memset( dvalues.data, 0, 14*sizeof(REAL8));

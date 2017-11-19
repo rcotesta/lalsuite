@@ -358,7 +358,7 @@ static int XLALSimIMRCalculateSpinEOBHCoeffs (SpinEOBHCoeffs * coeffs,
 					      const REAL8 eta,
 					      const REAL8 a,
 					      const UINT4
-					      SpinAlignedEOBversion);
+					      SpinAlignedEOBversion,const REAL8 KappaCal, const REAL8 dSOCal, const REAL8 dSSCal);
 
 static REAL8 XLALSimIMRSpinEOBHamiltonianDeltaT (SpinEOBHCoeffs * coeffs,
 						 const REAL8 r,
@@ -1224,7 +1224,7 @@ static int XLALSimIMRCalculateSpinEOBHCoeffs (SpinEOBHCoeffs * coeffs,
 					      const REAL8 a,
 				/**<< Normalized deformed Kerr spin */
 					      const UINT4 SpinAlignedEOBversion
-					      /**<< 1 for SEOBNRv1; 2 for SEOBNRv2 */
+					      /**<< 1 for SEOBNRv1; 2 for SEOBNRv2 */, const REAL8 KappaCal, const REAL8 dSOCal, const REAL8 dSSCal
   )
 {
 
@@ -1264,15 +1264,20 @@ static int XLALSimIMRCalculateSpinEOBHCoeffs (SpinEOBHCoeffs * coeffs,
 
   if (SpinAlignedEOBversion == 4)
     {
-      coeffs->KK = KK =
+      if((KappaCal == 0) && (dSOCal == 0) && (dSSCal == 0))
+      {coeffs->KK = KK =
         coeff00K + coeff01K * chi + coeff02K * chi2 + coeff03K * chi3 +
         coeff10K * eta + coeff11K * eta * chi + coeff12K * eta * chi2 +
         coeff13K * eta * chi3 + coeff20K * eta2 + coeff21K * eta2 * chi +
         coeff22K * eta2 * chi2 + coeff23K * eta2 * chi3 + coeff30K * eta3 +
         coeff31K * eta3 * chi + coeff32K * eta3 * chi2 + coeff33K * eta3 * chi3;
-//      printf("KK %.16e\n", KK);
+      }
+    else
+    {coeffs->KK = KK = KappaCal;
     }
-
+      printf("KK %.16e\n", KK);
+    }
+    
   m1PlusEtaKK = -1. + eta * KK;
   /* Eqs. 5.77 - 5.81 of BB1 */
   coeffs->k0 = k0 = KK * (m1PlusEtaKK - 1.);
@@ -1350,21 +1355,27 @@ static int XLALSimIMRCalculateSpinEOBHCoeffs (SpinEOBHCoeffs * coeffs,
       break;
     case 4:
       // dSO
+            if((KappaCal == 0) && (dSOCal == 0) && (dSSCal == 0)){
       coeffs->d1v2 =
             coeff00dSO + coeff01dSO * chi + coeff02dSO * chi2 + coeff03dSO * chi3 +
             coeff10dSO * eta + coeff11dSO * eta * chi + coeff12dSO * eta * chi2 +
             coeff13dSO * eta * chi3 + coeff20dSO * eta2 + coeff21dSO * eta2 * chi +
             coeff22dSO * eta2 * chi2 + coeff23dSO * eta2 * chi3 + coeff30dSO * eta3 +
-            coeff31dSO * eta3 * chi + coeff32dSO * eta3 * chi2 + coeff33dSO * eta3 * chi3;
+            coeff31dSO * eta3 * chi + coeff32dSO * eta3 * chi2 + coeff33dSO * eta3 * chi3;}
+            else
+            {coeffs->d1v2 = dSOCal;}
 
       // dSS
+           if((KappaCal == 0) && (dSOCal == 0) && (dSSCal == 0)){
       coeffs->dheffSSv2 =
             coeff00dSS + coeff01dSS * chi + coeff02dSS * chi2 + coeff03dSS * chi3 +
             coeff10dSS * eta + coeff11dSS * eta * chi + coeff12dSS * eta * chi2 +
             coeff13dSS * eta * chi3 + coeff20dSS * eta2 + coeff21dSS * eta2 * chi +
             coeff22dSS * eta2 * chi2 + coeff23dSS * eta2 * chi3 + coeff30dSS * eta3 +
-            coeff31dSS * eta3 * chi + coeff32dSS * eta3 * chi2 + coeff33dSS * eta3 * chi3;
-//          printf("dSO %.16e, dSS %.16e\n", coeffs->d1v2,coeffs->dheffSSv2);
+            coeff31dSS * eta3 * chi + coeff32dSS * eta3 * chi2 + coeff33dSS * eta3 * chi3;}
+            else
+            {coeffs->dheffSSv2 = dSSCal;}
+            printf("dSO %.16e, dSS %.16e\n", coeffs->d1v2,coeffs->dheffSSv2);
       break;
     default:
       XLALPrintError

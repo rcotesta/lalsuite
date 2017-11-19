@@ -449,6 +449,15 @@ XLALSimIMRSpinAlignedEOBWaveform (REAL8TimeSeries ** hplus,	     /**<< OUTPUT, +
   REAL8 omega02Tidal2 = 0;
   REAL8 lambda3Tidal2 = 0;
   REAL8 omega03Tidal2 = 0;
+  REAL8 KappaCal = 0;
+  REAL8 dSOCal = 0;
+  REAL8 dSSCal = 0;
+  REAL8 DT22Cal = 0;
+  
+  KappaCal = XLALSimInspiralWaveformParamsLookupKappaCal(LALParams);
+  dSOCal = XLALSimInspiralWaveformParamsLookupdSOCal(LALParams);
+  dSSCal = XLALSimInspiralWaveformParamsLookupdSSCal(LALParams);
+  DT22Cal = XLALSimInspiralWaveformParamsLookupDT22Cal(LALParams);
 
   lambda2Tidal1 = XLALSimInspiralWaveformParamsLookupTidalLambda1(LALParams);
   lambda2Tidal2 = XLALSimInspiralWaveformParamsLookupTidalLambda2(LALParams);
@@ -499,7 +508,7 @@ XLALSimIMRSpinAlignedEOBWaveform (REAL8TimeSeries ** hplus,	     /**<< OUTPUT, +
 #endif
       ret = XLALSimIMRSpinAlignedEOBWaveformAll (hplus, hcross, tVec, rVec, phiVec, prVec, pPhiVec,
                      phiC, 1./32768, m1BH, m2BH, 2*pow(10.,-1.5)/(2.*LAL_PI)/((m1BH + m2BH)*LAL_MTSUN_SI/LAL_MSUN_SI), r, inc, spin1z, spin2z, 400,
-					 0, 0, 0, 0, 0, 0, 0, 0, nqcCoeffsInput, nqcFlag);
+					 0, 0, 0, 0, 0, 0, 0, 0, nqcCoeffsInput, nqcFlag,KappaCal,dSOCal,dSSCal,DT22Cal);
 
       if( tVec )
         XLALDestroyREAL8Vector( tVec );
@@ -530,7 +539,7 @@ XLALSimIMRSpinAlignedEOBWaveform (REAL8TimeSeries ** hplus,	     /**<< OUTPUT, +
                                                  omega02Tidal1, omega02Tidal2,
                                                  lambda3Tidal1, lambda3Tidal2,
                                                  omega03Tidal1, omega03Tidal2,
-                                                 nqcCoeffsInput, nqcFlag);
+                                                 nqcCoeffsInput, nqcFlag,KappaCal,dSOCal,dSSCal,DT22Cal);
       if( tVec )
         XLALDestroyREAL8Vector( tVec );
       if( rVec )
@@ -621,7 +630,7 @@ XLALSimIMRSpinAlignedEOBWaveformAll (REAL8TimeSeries ** hplus,
                      REAL8Vector *nqcCoeffsInput,
                      /**<< Input NQC coeffs */
                      const INT4 nqcFlag
-                     /**<< Flag to tell the code to use the NQC coeffs input thorugh nqcCoeffsInput */
+                     /**<< Flag to tell the code to use the NQC coeffs input thorugh nqcCoeffsInput */, const REAL8 KappaCal, const REAL8 dSOCal, const REAL8 dSSCal, const REAL8 DT22Cal
   )
 {
   REAL8 STEP_SIZE = STEP_SIZE_CALCOMEGA;
@@ -995,6 +1004,9 @@ XLALSimIMRSpinAlignedEOBWaveformAll (REAL8TimeSeries ** hplus,
   seobParams.seobCoeffs = &seobCoeffs;
   seobParams.eobParams = &eobParams;
   seobParams.nqcCoeffs = &nqcCoeffs;
+  seobParams.KappaCal = KappaCal;
+  seobParams.dSOCal = dSOCal;
+  seobParams.dSSCal = dSSCal;
   eobParams.hCoeffs = &hCoeffs;
   eobParams.prefixes = &prefixes;
 
@@ -1100,7 +1112,7 @@ XLALSimIMRSpinAlignedEOBWaveformAll (REAL8TimeSeries ** hplus,
 
   /* Now compute the spinning H coefficients and store them in seobCoeffs */
     if (XLALSimIMRCalculateSpinEOBHCoeffs
-      (&seobCoeffs, eta, a, SpinAlignedEOBversion) == XLAL_FAILURE)
+      (&seobCoeffs, eta, a, SpinAlignedEOBversion,KappaCal,dSOCal,dSSCal) == XLAL_FAILURE)
     {
       XLALDestroyREAL8Vector (sigmaKerr);
       XLALDestroyREAL8Vector (sigmaStar);
@@ -1737,8 +1749,10 @@ XLALSimIMRSpinAlignedEOBWaveformAll (REAL8TimeSeries ** hplus,
       timewavePeak = XLALSimIMREOBGetNRSpinPeakDeltaTv2 (2, 2, m1, m2, spin1z, spin2z);	// David debug: we need to be using v2 for SpinAlignedEOBversion 2, right?
       break;
     case 4:
-      timewavePeak =
-	XLALSimIMREOBGetNRSpinPeakDeltaTv4 (2, 2, m1, m2, spin1z, spin2z);
+            if(DT22Cal == 0){timewavePeak =
+                XLALSimIMREOBGetNRSpinPeakDeltaTv4 (2, 2, m1, m2, spin1z, spin2z);}
+            else
+            {timewavePeak = DT22Cal;}
       break;
     default:
       XLALPrintError
@@ -1750,7 +1764,7 @@ XLALSimIMRSpinAlignedEOBWaveformAll (REAL8TimeSeries ** hplus,
     if (use_tidal == 1) {
         timewavePeak = 0.;
     }
-
+    printf("%.16e\n",timewavePeak);
   /* Apply to the high sampled part */
 #if debugOutput
   out = fopen ("saWavesHi.dat", "w");

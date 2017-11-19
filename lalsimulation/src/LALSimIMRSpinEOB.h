@@ -126,6 +126,9 @@ tagSpinEOBParams
   REAL8                   chi1;
   REAL8                   chi2;
   REAL8                   prev_dr;
+  REAL8                   KappaCal;
+  REAL8                   dSOCal;
+  REAL8                   dSSCal;
   int                     alignedSpins;
   Approximant             seobApproximant; /*OPTV3*/
   int                     tortoise;

@@ -24,6 +24,11 @@ int XLALSimInspiralWaveformParamsInsertPNEccentricityOrder(LALDict *params, INT4
 int XLALSimInspiralWaveformParamsInsertPNSpinOrder(LALDict *params, INT4 value);
 int XLALSimInspiralWaveformParamsInsertPNTidalOrder(LALDict *params, INT4 value);
 
+int XLALSimInspiralWaveformParamsInsertKappaCal(LALDict *params, REAL8 value);
+int XLALSimInspiralWaveformParamsInsertdSOCal(LALDict *params, REAL8 value);
+int XLALSimInspiralWaveformParamsInsertdSSCal(LALDict *params, REAL8 value);
+int XLALSimInspiralWaveformParamsInsertDT22Cal(LALDict *params, REAL8 value);
+
 int XLALSimInspiralWaveformParamsInsertTidalLambda1(LALDict *params, REAL8 value);
 int XLALSimInspiralWaveformParamsInsertTidalLambda2(LALDict *params, REAL8 value);
 int XLALSimInspiralWaveformParamsInsertTidalOctupolarLambda1(LALDict *params, REAL8 value);
@@ -109,6 +114,11 @@ INT4 XLALSimInspiralWaveformParamsLookupPNEccentricityOrder(LALDict *params);
 INT4 XLALSimInspiralWaveformParamsLookupPNSpinOrder(LALDict *params);
 INT4 XLALSimInspiralWaveformParamsLookupPNTidalOrder(LALDict *params);
 
+REAL8 XLALSimInspiralWaveformParamsLookupKappaCal(LALDict *params);
+REAL8 XLALSimInspiralWaveformParamsLookupdSOCal(LALDict *params);
+REAL8 XLALSimInspiralWaveformParamsLookupdSSCal(LALDict *params);
+REAL8 XLALSimInspiralWaveformParamsLookupDT22Cal(LALDict *params);
+
 REAL8 XLALSimInspiralWaveformParamsLookupTidalLambda1(LALDict *params);
 REAL8 XLALSimInspiralWaveformParamsLookupTidalLambda2(LALDict *params);
 REAL8 XLALSimInspiralWaveformParamsLookupTidalOctupolarLambda1(LALDict *params);
@@ -193,6 +203,11 @@ int XLALSimInspiralWaveformParamsPNAmplitudeOrderIsDefault(LALDict *params);
 int XLALSimInspiralWaveformParamsPNEccentricityOrderIsDefault(LALDict *params);
 int XLALSimInspiralWaveformParamsPNSpinOrderIsDefault(LALDict *params);
 int XLALSimInspiralWaveformParamsPNTidalOrderIsDefault(LALDict *params);
+
+int XLALSimInspiralWaveformParamsKappaCalIsDefault(LALDict *params);
+int XLALSimInspiralWaveformParamsdSOCalIsDefault(LALDict *params);
+int XLALSimInspiralWaveformParamsdSSCalIsDefault(LALDict *params);
+int XLALSimInspiralWaveformParamsDT22CalIsDefault(LALDict *params);
 
 int XLALSimInspiralWaveformParamsTidalLambda1IsDefault(LALDict *params);
 int XLALSimInspiralWaveformParamsTidalLambda2IsDefault(LALDict *params);

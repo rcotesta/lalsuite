@@ -283,6 +283,14 @@ static GSParams *parse_args(ssize_t argc, char **argv) {
             params->s2z = atof(argv[++i]);
         } else if (strcmp(argv[i], "--tidal-lambda1") == 0) {
 	    XLALSimInspiralWaveformParamsInsertTidalLambda1(params->params, atof(argv[++i]));
+        } else if (strcmp(argv[i], "--KappaCal") == 0) {
+            XLALSimInspiralWaveformParamsInsertKappaCal(params->params, atof(argv[++i]));
+        } else if (strcmp(argv[i], "--dSOCal") == 0) {
+            XLALSimInspiralWaveformParamsInsertdSOCal(params->params, atof(argv[++i]));
+        } else if (strcmp(argv[i], "--dSSCal") == 0) {
+            XLALSimInspiralWaveformParamsInsertdSSCal(params->params, atof(argv[++i]));
+        } else if (strcmp(argv[i], "--DT22Cal") == 0) {
+            XLALSimInspiralWaveformParamsInsertDT22Cal(params->params, atof(argv[++i]));
         } else if (strcmp(argv[i], "--tidal-lambda2") == 0) {
 	    XLALSimInspiralWaveformParamsInsertTidalLambda2(params->params, atof(argv[++i]));
         } else if (strcmp(argv[i], "--tidal-lambda-octu1") == 0) {

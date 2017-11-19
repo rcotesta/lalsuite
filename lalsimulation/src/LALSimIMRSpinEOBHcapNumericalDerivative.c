@@ -131,6 +131,7 @@ static int XLALSpinHcapNumericalDerivative(
   REAL8Vector s1, s2, s1norm, s2norm, sKerr, sStar;
   REAL8       s1Data[3], s2Data[3], s1DataNorm[3], s2DataNorm[3];
   REAL8       sKerrData[3], sStarData[3];
+  REAL8       KappaCal, dSOCal, dSSCal;
   //REAL8 magS1, magS2, chiS, chiA, a;
 
 
@@ -162,6 +163,9 @@ static int XLALSpinHcapNumericalDerivative(
   mass2 = params.params->eobParams->m2;
   eta   = params.params->eobParams->eta;
   SpinAlignedEOBversion = params.params->seobCoeffs->SpinAlignedEOBversion;
+  KappaCal = params.params->KappaCal;
+  dSSCal = params.params->dSOCal;
+  dSOCal = params.params->dSSCal;
 
   /* For precessing binaries, the effective spin of the Kerr
    * background evolves with time. The coefficients used to compute
@@ -201,7 +205,7 @@ static int XLALSpinHcapNumericalDerivative(
 								+ tmpsigmaKerr->data[2]*tmpsigmaKerr->data[2] );
     //tmpsigmaKerr->data[2];
     if ( XLALSimIMRCalculateSpinEOBHCoeffs( params.params->seobCoeffs, eta,
-					params.params->a, SpinAlignedEOBversion ) == XLAL_FAILURE )
+					params.params->a, SpinAlignedEOBversion,KappaCal,dSOCal,dSSCal) == XLAL_FAILURE )
     {
       XLALDestroyREAL8Vector( params.params->sigmaKerr );
       XLAL_ERROR( XLAL_EFUNC );
@@ -529,7 +533,7 @@ static double GSLSpinHamiltonianWrapper( double x, void *params )
     //tmpsigmaKerr->data[2];
     if ( XLALSimIMRCalculateSpinEOBHCoeffs( dParams->params->seobCoeffs,
 			eobParams->eta, a,
-			dParams->params->seobCoeffs->SpinAlignedEOBversion ) == XLAL_FAILURE )
+			dParams->params->seobCoeffs->SpinAlignedEOBversion,dParams->params->KappaCal,dParams->params->dSOCal,dParams->params->dSSCal) == XLAL_FAILURE )
     {
       XLALDestroyREAL8Vector( dParams->params->sigmaKerr );
       XLAL_ERROR( XLAL_EFUNC );

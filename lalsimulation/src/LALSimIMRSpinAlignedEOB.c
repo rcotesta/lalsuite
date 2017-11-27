@@ -21,6 +21,7 @@
 
 #include <math.h>
 #include <complex.h>
+#include <float.h>
 #include <lal/LALSimInspiral.h>
 #include <lal/LALSimIMR.h>
 #include <lal/Date.h>
@@ -449,10 +450,10 @@ XLALSimIMRSpinAlignedEOBWaveform (REAL8TimeSeries ** hplus,	     /**<< OUTPUT, +
   REAL8 omega02Tidal2 = 0;
   REAL8 lambda3Tidal2 = 0;
   REAL8 omega03Tidal2 = 0;
-  REAL8 KappaCal = 0;
-  REAL8 dSOCal = 0;
-  REAL8 dSSCal = 0;
-  REAL8 DT22Cal = 0;
+  REAL8 KappaCal = DBL_MAX;
+  REAL8 dSOCal = DBL_MAX;
+  REAL8 dSSCal = DBL_MAX;
+  REAL8 DT22Cal = DBL_MAX;
   
   KappaCal = XLALSimInspiralWaveformParamsLookupKappaCal(LALParams);
   dSOCal = XLALSimInspiralWaveformParamsLookupdSOCal(LALParams);
@@ -1749,7 +1750,7 @@ XLALSimIMRSpinAlignedEOBWaveformAll (REAL8TimeSeries ** hplus,
       timewavePeak = XLALSimIMREOBGetNRSpinPeakDeltaTv2 (2, 2, m1, m2, spin1z, spin2z);	// David debug: we need to be using v2 for SpinAlignedEOBversion 2, right?
       break;
     case 4:
-            if(DT22Cal == 0){timewavePeak =
+            if(DT22Cal == DBL_MAX){timewavePeak =
                 XLALSimIMREOBGetNRSpinPeakDeltaTv4 (2, 2, m1, m2, spin1z, spin2z);}
             else
             {timewavePeak = DT22Cal;}

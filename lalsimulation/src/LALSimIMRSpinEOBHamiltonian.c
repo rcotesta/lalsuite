@@ -35,6 +35,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <float.h>
 
 #include <lal/LALSimInspiral.h>
 #include <lal/LALSimIMR.h>
@@ -1264,7 +1265,7 @@ static int XLALSimIMRCalculateSpinEOBHCoeffs (SpinEOBHCoeffs * coeffs,
 
   if (SpinAlignedEOBversion == 4)
     {
-      if((KappaCal == 0) && (dSOCal == 0) && (dSSCal == 0))
+      if((KappaCal == DBL_MAX) && (dSOCal == DBL_MAX) && (dSSCal == DBL_MAX))
       {coeffs->KK = KK =
         coeff00K + coeff01K * chi + coeff02K * chi2 + coeff03K * chi3 +
         coeff10K * eta + coeff11K * eta * chi + coeff12K * eta * chi2 +
@@ -1355,7 +1356,7 @@ static int XLALSimIMRCalculateSpinEOBHCoeffs (SpinEOBHCoeffs * coeffs,
       break;
     case 4:
       // dSO
-            if((KappaCal == 0) && (dSOCal == 0) && (dSSCal == 0)){
+            if((KappaCal == DBL_MAX) && (dSOCal == DBL_MAX) && (dSSCal == DBL_MAX)){
       coeffs->d1v2 =
             coeff00dSO + coeff01dSO * chi + coeff02dSO * chi2 + coeff03dSO * chi3 +
             coeff10dSO * eta + coeff11dSO * eta * chi + coeff12dSO * eta * chi2 +
@@ -1366,7 +1367,7 @@ static int XLALSimIMRCalculateSpinEOBHCoeffs (SpinEOBHCoeffs * coeffs,
             {coeffs->d1v2 = dSOCal;}
 
       // dSS
-           if((KappaCal == 0) && (dSOCal == 0) && (dSSCal == 0)){
+           if((KappaCal == DBL_MAX) && (dSOCal == DBL_MAX) && (dSSCal == DBL_MAX)){
       coeffs->dheffSSv2 =
             coeff00dSS + coeff01dSS * chi + coeff02dSS * chi2 + coeff03dSS * chi3 +
             coeff10dSS * eta + coeff11dSS * eta * chi + coeff12dSS * eta * chi2 +

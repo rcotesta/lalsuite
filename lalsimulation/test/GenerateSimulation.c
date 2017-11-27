@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/types.h>
+#include <float.h>
 
 #include <lal/LALConstants.h>
 #include <lal/LALDatatypes.h>
@@ -283,13 +284,13 @@ static GSParams *parse_args(ssize_t argc, char **argv) {
             params->s2z = atof(argv[++i]);
         } else if (strcmp(argv[i], "--tidal-lambda1") == 0) {
 	    XLALSimInspiralWaveformParamsInsertTidalLambda1(params->params, atof(argv[++i]));
-        } else if (strcmp(argv[i], "--KappaCal") == 0) {
+        } else if (strcmp(argv[i], "--KappaCal") == DBL_MAX) {
             XLALSimInspiralWaveformParamsInsertKappaCal(params->params, atof(argv[++i]));
-        } else if (strcmp(argv[i], "--dSOCal") == 0) {
+        } else if (strcmp(argv[i], "--dSOCal") == DBL_MAX) {
             XLALSimInspiralWaveformParamsInsertdSOCal(params->params, atof(argv[++i]));
-        } else if (strcmp(argv[i], "--dSSCal") == 0) {
+        } else if (strcmp(argv[i], "--dSSCal") == DBL_MAX) {
             XLALSimInspiralWaveformParamsInsertdSSCal(params->params, atof(argv[++i]));
-        } else if (strcmp(argv[i], "--DT22Cal") == 0) {
+        } else if (strcmp(argv[i], "--DT22Cal") == DBL_MAX) {
             XLALSimInspiralWaveformParamsInsertDT22Cal(params->params, atof(argv[++i]));
         } else if (strcmp(argv[i], "--tidal-lambda2") == 0) {
 	    XLALSimInspiralWaveformParamsInsertTidalLambda2(params->params, atof(argv[++i]));

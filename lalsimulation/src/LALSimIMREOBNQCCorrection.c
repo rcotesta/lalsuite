@@ -955,7 +955,7 @@ XLALSimIMREOBGetNRSpinPeakAmplitudeV4 (INT4 UNUSED l, INT4 UNUSED m, REAL8 UNUSE
                   break;
           }
           break;
-      
+
       default:
           XLALPrintError("XLAL Error - %s: At present only fits for the (2,2) mode are available.\n", __func__);
           XLAL_ERROR (XLAL_EINVAL);
@@ -1032,7 +1032,7 @@ XLALSimIMREOBGetNRSpinPeakADDotV4 (INT4 UNUSED l, INT4 UNUSED m, REAL8 UNUSED et
                     break;
             }
           break;
-      
+
       default:
           XLALPrintError("XLAL Error - %s: At present only fits for the (2,2) mode are available.\n", __func__);
           XLAL_ERROR (XLAL_EINVAL);
@@ -1143,7 +1143,7 @@ XLALSimIMREOBGetNRSpinPeakOmegaV4 (INT4 UNUSED l, INT4 UNUSED m, REAL8 UNUSED et
                     break;
             }
             break;
-            
+
         default:
             XLALPrintError("XLAL Error - %s: At present only fits for the (2,2) mode are available.\n", __func__);
             XLAL_ERROR (XLAL_EINVAL);
@@ -1213,14 +1213,14 @@ XLALSimIMREOBGetNRSpinPeakOmegaDotV4 (INT4 UNUSED l, INT4 UNUSED m, REAL8 UNUSED
                   A1 = e0 + e1 * chi;
                   res = CombineTPLEQMFits(eta, A1, fEQ, fTPL);;
                   break;
-              
+
               default:
                   XLALPrintError("XLAL Error - %s: At present only fits for the (2,2) mode are available.\n", __func__);
                   XLAL_ERROR (XLAL_EINVAL);
                   break;
           }
           break;
-      
+
       default:
           XLALPrintError("XLAL Error - %s: At present only fits for the (2,2) mode are available.\n", __func__);
           XLAL_ERROR (XLAL_EINVAL);
@@ -1398,7 +1398,7 @@ XLALSimIMREOBGetNRSpinPeakDeltaTv4 (INT4 UNUSED l,				/**<< Mode l */
                   break;
           }
           break;
-          
+
       default:
           XLALPrintError("XLAL Error - %s: At present only fits for the (2,2) mode are available.\n", __func__);
           XLAL_ERROR (XLAL_EINVAL);
@@ -2031,7 +2031,8 @@ XLALSimIMRSpinEOBCalculateNQCCoefficientsV4 (REAL8Vector * restrict amplitude,		
 					     REAL8 chiA,					   /**<< Assymmetric dimensionless spin combination */
 					     REAL8 chiS,					   /**<< Symmetric dimensionless spin combination */
 					     EOBNonQCCoeffs * restrict coeffs,			   /**<< OUTPUT, NQC coefficients */
-					     UINT4 SpinAlignedEOBversion				     /**<< 1 for SEOBNRv1, 2 for SEOBNRv2 */
+					     UINT4 SpinAlignedEOBversion,				     /**<< 1 for SEOBNRv1, 2 for SEOBNRv2 */
+							 REAL8 delta_T																	/**<< Calibration parameter delta_T */
   )
 {
   int debugAT = 0;
@@ -2189,8 +2190,13 @@ XLALSimIMRSpinEOBCalculateNQCCoefficientsV4 (REAL8Vector * restrict amplitude,		
       nrDeltaT = XLALSimIMREOBGetNRSpinPeakDeltaT (l, m, eta, a);
       break;
     case 4:
-      nrDeltaT =
-	XLALSimIMREOBGetNRSpinPeakDeltaTv4 (l, m, m1, m2, chi1, chi2);
+			if(delta_T == DBL_MAX){
+      	nrDeltaT =
+				XLALSimIMREOBGetNRSpinPeakDeltaTv4 (l, m, m1, m2, chi1, chi2);
+			}
+			else{
+				nrDeltaT = delta_T;
+			}
       break;
     default:
       XLALPrintError

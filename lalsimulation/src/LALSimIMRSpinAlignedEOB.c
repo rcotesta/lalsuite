@@ -454,7 +454,7 @@ XLALSimIMRSpinAlignedEOBWaveform (REAL8TimeSeries ** hplus,	     /**<< OUTPUT, +
   REAL8 dSOCal = DBL_MAX;
   REAL8 dSSCal = DBL_MAX;
   REAL8 DT22Cal = DBL_MAX;
-  
+
   KappaCal = XLALSimInspiralWaveformParamsLookupKappaCal(LALParams);
   dSOCal = XLALSimInspiralWaveformParamsLookupdSOCal(LALParams);
   dSSCal = XLALSimInspiralWaveformParamsLookupdSSCal(LALParams);
@@ -1684,7 +1684,7 @@ XLALSimIMRSpinAlignedEOBWaveformAll (REAL8TimeSeries ** hplus,
             if (XLALSimIMRSpinEOBCalculateNQCCoefficientsV4
                 (ampNQC, phaseNQC, &rHi, &prHi, omegaHi, 2, 2, timePeak,
                  deltaTHigh / mTScaled, m1, m2, a, chiA, chiS, &nqcCoeffs,
-                 SpinAlignedEOBversion) == XLAL_FAILURE)
+                 SpinAlignedEOBversion,DT22Cal) == XLAL_FAILURE)
             {
                 XLAL_ERROR (XLAL_EFUNC);
             }
